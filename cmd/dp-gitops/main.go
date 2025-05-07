@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/chrishare/datapower-gitops-go/internal/dpobjects"
 )
@@ -19,10 +20,13 @@ func main() {
 		Username: "admin",
 		Password: "password",
 	}
-	dpobjects.TestConnection(server)
-
-	var baseObject dpobjects.BaseObject
-	_ = baseObject
+	serverStatus := dpobjects.TestConnection(server)
+	if serverStatus != dpobjects.SUCCESS {
+		log.Println("Got an error:", serverStatus)
+		os.Exit(1)
+	}
+	//var baseObject dpobjects.BaseObject
+	//_ = baseObject
 
 	//var logger dpobjects.LogTarget
 	//_ = logger
@@ -34,9 +38,15 @@ func main() {
 		"LocalFile":   "logtemp:///temp.log",
 		"LogEvents":   "blah",
 	}
-	logger := dpobjects.NewLogTarget(loggerData)
-	_ = logger
 
-	log.Println(dpobjects.ToPrettyJSON(logger))
-	log.Println(dpobjects.ToPrettyYAML(logger))
+	//var logTarget dpobjects.LogTarget = dpobjects.NewLogTarget(loggerData)
+	//baseObject = logTarget
+	//log.Println(logTarget.ToPrettyJSON())
+	//log.Println(baseObject.ToPrettyJSON())
+	//log.Println(baseObject.ToPrettyYAML())
+
+	logCat := dpobjects.LogTarget{DPObjectCommon: dpobjects.DPObjectCommon{InternalState: loggerData}}
+	var dpBase dpobjects.DPObject = logCat
+	log.Println(dpBase.ToPrettyJSON())
+
 }

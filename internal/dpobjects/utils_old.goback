@@ -63,7 +63,29 @@ func TestConnection(server Server) ServerStatus {
 	return SUCCESS
 }
 
-type DPObject interface {
+type DPBaseInterface interface {
+	Speak() string
+}
+
+type DPBase struct {
+	InternalState map[string]interface{}
+}
+
+func GetState(dpBase DPBase) map[string]interface{} {
+	return dpBase.InternalState
+}
+
+func (dpBase DPBase) Speak() string {
+	return "yeah"
+}
+
+type LogCat struct {
+	DPBase
+}
+
+type BaseObject interface {
+	GetState() map[string]interface{}
+	GetURI() string
 	Create(Server)
 	Update(Server)
 	Set(Server)
@@ -72,39 +94,31 @@ type DPObject interface {
 	ToPrettyYAML() string
 }
 
-type DPObjectCommon struct {
-	InternalState map[string]interface{}
-}
-
-func (dpObjectCommon DPObjectCommon) Create(server Server) {
-	// Do nothing
-}
-
-func (dpObjectCommon DPObjectCommon) Update(server Server) {
-	// Do nothing
-}
-
-func (dpObjectCommon DPObjectCommon) Set(server Server) {
-	// Do nothing
-}
-
-func (dpObjectCommon DPObjectCommon) Get(server Server) {
-	// Do nothing
-}
-
-func (dpObjectCommon DPObjectCommon) ToPrettyJSON() string {
-	json, err := json.Marshal(dpObjectCommon.InternalState)
+func CommonToPrettyJSON(baseObject BaseObject) string {
+	json, err := json.Marshal(baseObject.GetState())
 	if err != nil {
-		panic(err)
+		return ""
 	} else {
 		return string(json[:])
 	}
 }
 
-func (dpObjectCommon DPObjectCommon) ToPrettyYAML() string {
-	yaml, err := yaml.Marshal(dpObjectCommon.InternalState)
+func CommonToPrettyYAML(logTarget LogTarget) string {
+	yaml, err := yaml.Marshal(logTarget.internalState)
 	if err != nil {
 		panic(err)
 	}
 	return string(yaml[:])
+}
+
+func Update(server Server) {
+}
+
+func Set(baseObject BaseObject) {
+}
+
+func Get(baseObject BaseObject) {
+}
+
+func Create(baseObject BaseObject) {
 }

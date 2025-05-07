@@ -4,6 +4,10 @@ Go rewrite of datapower tooling I'd formerly written in python.
 
 This utility performs datapower maintenance activities (deployments, validations, upgrades) in a gitops-styled fashion, with some standalone CLI functionality too.
 
+### Version history
+
+0.01 - Create a log entry
+0.02 - 
 ### TODO
 
 * Add tocfg method for all times, to convert from the standard yaml/json/soap format to text cfg

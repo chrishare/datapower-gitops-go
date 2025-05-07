@@ -3,34 +3,15 @@ package dpobjects
 import (
 	"encoding/json"
 	"fmt"
-
-	"gopkg.in/yaml.v3"
 )
 
 type LogTarget struct {
-	internalState map[string]interface{}
+	// This inherits DPObjects's functions etc as top level LogCat functions
+	DPObjectCommon
 }
 
-func NewLogTarget(state map[string]interface{}) LogTarget {
-	return LogTarget{
-		internalState: state,
-	}
-}
-
-func ToPrettyJSON(logTarget LogTarget) string {
-	json, err := json.MarshalIndent(logTarget.internalState, "", "  ")
-	if err != nil {
-		panic(err)
-	}
-	return string(json[:])
-}
-
-func ToPrettyYAML(logTarget LogTarget) string {
-	yaml, err := yaml.Marshal(logTarget.internalState)
-	if err != nil {
-		panic(err)
-	}
-	return string(yaml[:])
+func (logCat LogTarget) ToPrettyJSON() string {
+	return "logCat json"
 }
 
 func Test(l LogTarget) {
