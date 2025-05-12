@@ -18,7 +18,7 @@ func main() {
 	server := dpobjects.Server{
 		Hostname: "localhost:5554",
 		Username: "admin",
-		Password: "password",
+		Password: "admin",
 	}
 	serverStatus := dpobjects.TestConnection(server)
 	if serverStatus != dpobjects.SUCCESS {
@@ -38,15 +38,20 @@ func main() {
 		"LocalFile":   "logtemp:///temp.log",
 		"LogEvents":   "blah",
 	}
-
+	_ = loggerData
 	//var logTarget dpobjects.LogTarget = dpobjects.NewLogTarget(loggerData)
 	//baseObject = logTarget
 	//log.Println(logTarget.ToPrettyJSON())
 	//log.Println(baseObject.ToPrettyJSON())
 	//log.Println(baseObject.ToPrettyYAML())
 
-	logCat := dpobjects.LogTarget{DPObjectCommon: dpobjects.DPObjectCommon{InternalState: loggerData}}
-	var dpBase dpobjects.DPObject = logCat
-	log.Println(dpBase.ToPrettyJSON())
+	//logCat := dpobjects.LogTarget{DPObjectCommon: dpobjects.DPObjectCommon{InternalState: loggerData}}
+	//var dpBase dpobjects.DPObject = logCat
+	logCat, err := dpobjects.NewLogTarget()
+	if err == nil {
+		log.Println(err)
+	}
+	logCat.Get(server, "default", "default-log")
+	log.Println(logCat.ToPrettyJSON())
 
 }

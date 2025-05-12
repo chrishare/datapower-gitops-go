@@ -10,8 +10,16 @@ type LogTarget struct {
 	DPObjectCommon
 }
 
-func (logCat LogTarget) ToPrettyJSON() string {
-	return "logCat json"
+func NewLogTarget() (*LogTarget, error) {
+	return &LogTarget{
+		DPObjectCommon: DPObjectCommon{InternalState: map[string]interface{}{}, ObjectType: "LogTarget"},
+	}, nil
+}
+
+func NewLogTargetFromState(initialState map[string]interface{}) (*LogTarget, error) {
+	return &LogTarget{
+		DPObjectCommon: DPObjectCommon{InternalState: initialState, ObjectType: "LogTarget"},
+	}, nil
 }
 
 func Test(l LogTarget) {
